@@ -702,12 +702,13 @@ function renderEquipGrid(){
     const unavail=signedOut.has(e.code);
     const inBasket=basket.find(b=>b.code===e.code);
     const det=details[e.code];
-    return `<div class="equip-card${inBasket?' selected':''}${unavail?' unavailable':''}" onclick="${unavail?'':'toggleBasket(''+e.code+'')'}">
+    const clickHandler = unavail ? '' : 'toggleBasket(\''+e.code+'\')';
+    return `<div class="equip-card${inBasket?' selected':''}${unavail?' unavailable':''}" onclick="${clickHandler}">
       <div class="equip-card-check">${inBasket?'✓':''}</div>
       <div class="equip-card-code">${e.code}</div>
       <div class="equip-card-name">${e.name}</div>
       <div class="equip-card-meta">${e.cat||''}${e.serial?' · SN: '+e.serial:''}</div>
-      ${unavail?`<div class="unavail-badge">🔒 OUT${det?' · '+det.person:''}</div>`:''}
+      ${unavail?'<div class=\"unavail-badge\">🔒 OUT'+(det?' · '+det.person:'')+'</div>':''}
     </div>`;
   }).join('');
 }
@@ -896,7 +897,7 @@ function renderActive(){
       ${r.notes?`<div class="item-row"><span class="item-row-lbl">Notes</span><span class="item-row-val">${r.notes}</span></div>`:''}
       ${r.returnDue?`<div class="item-row"><span class="item-row-lbl">Due Back</span><span class="item-row-val">${formatDate(r.returnDue)}</span></div>`:''}
       ${dm?`<div><span class="due-countdown ${dc}">${dm}</span></div>`:''}
-      <button class="return-quick-btn" onclick="openModal('${r.id}','${r.equip.replace(/'/g,"\'")} (${r.code})')">↩ Return This Item</button>
+      <button class="return-quick-btn" onclick="openModal('${r.id}','${r.equip} (${r.code})')">↩ Return This Item</button>
     </div>`;
   }).join('');
 }
